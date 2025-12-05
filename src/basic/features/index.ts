@@ -5,7 +5,7 @@
  */
 
 // Cart
-export { Cart, CartItem } from './cart';
+export { Cart, CartItemComponent } from './cart';
 
 // Product
 export { ProductList, ProductCard } from './product';
