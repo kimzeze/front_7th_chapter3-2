@@ -1,5 +1,4 @@
 import { useCoupon, useCart, useNotification } from '../../hooks';
-import type { Coupon } from '../../../types';
 
 /**
  * 쿠폰 선택기 컴포넌트
