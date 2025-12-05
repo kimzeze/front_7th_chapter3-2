@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { Coupon } from '../../types';
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from '../utils';
+import { initialCoupons } from '../constants';
 
 /**
  * useCoupon 훅 반환 타입
@@ -13,24 +14,6 @@ export interface UseCouponReturn {
   addCoupon: (coupon: Coupon) => void;
   deleteCoupon: (code: string) => void;
 }
-
-/**
- * 초기 쿠폰 데이터
- */
-const initialCoupons: Coupon[] = [
-  {
-    name: '5000원 할인',
-    code: 'AMOUNT5000',
-    discountType: 'amount',
-    discountValue: 5000
-  },
-  {
-    name: '10% 할인',
-    code: 'PERCENT10',
-    discountType: 'percentage',
-    discountValue: 10
-  }
-];
 
 /**
  * 쿠폰 관리 훅

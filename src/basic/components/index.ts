@@ -1,3 +1,7 @@
+// Page Components
+export { CartPage } from './CartPage';
+export { AdminPage } from './AdminPage';
+
 // Cart Components
 export { Cart } from './cart';
 export { CartItem } from './cart';

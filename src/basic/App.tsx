@@ -1,15 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useProduct, useCoupon, useCart, type ProductWithUI } from './hooks';
-import { formatPrice, formatAdminPrice, getMaxDiscountPercent } from './utils';
-import { getAppliedDiscountRate } from './utils';
-import {
-  Cart,
-  ProductList,
-  CouponSelector,
-  OrderSummary,
-  ProductManagement,
-  CouponManagement
-} from './components';
+import { getMaxDiscountPercent, getAppliedDiscountRate } from './models';
+import { formatPrice, formatAdminPrice } from './utils';
+import { CartPage, AdminPage } from './components';
 
 interface Notification {
   id: string;
@@ -42,7 +35,6 @@ const App = () => {
   // UI 상태
   const [isAdmin, setIsAdmin] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [activeTab, setActiveTab] = useState<'products' | 'coupons'>('products');
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [totalItemCount, setTotalItemCount] = useState(0);
@@ -330,99 +322,37 @@ const App = () => {
       {/* 메인 컨텐츠 */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {isAdmin ? (
-          /* 관리자 페이지 */
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900">관리자 대시보드</h1>
-              <p className="text-gray-600 mt-1">상품과 쿠폰을 관리할 수 있습니다</p>
-            </div>
-            <div className="border-b border-gray-200 mb-6">
-              <nav className="-mb-px flex space-x-8">
-                <button
-                  onClick={() => setActiveTab('products')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === 'products'
-                      ? 'border-gray-900 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  상품 관리
-                </button>
-                <button
-                  onClick={() => setActiveTab('coupons')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === 'coupons'
-                      ? 'border-gray-900 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  쿠폰 관리
-                </button>
-              </nav>
-            </div>
-
-            {activeTab === 'products' ? (
-              <ProductManagement
-                products={products}
-                onAddProduct={handleAddProduct}
-                onUpdateProduct={handleUpdateProduct}
-                onDeleteProduct={handleDeleteProduct}
-                displayPrice={displayPrice}
-                onNotification={addNotification}
-              />
-            ) : (
-              <CouponManagement
-                coupons={coupons}
-                onAddCoupon={handleAddCoupon}
-                onDeleteCoupon={handleDeleteCoupon}
-                onNotification={addNotification}
-              />
-            )}
-          </div>
+          <AdminPage
+            products={products}
+            coupons={coupons}
+            displayPrice={displayPrice}
+            onAddProduct={handleAddProduct}
+            onUpdateProduct={handleUpdateProduct}
+            onDeleteProduct={handleDeleteProduct}
+            onAddCoupon={handleAddCoupon}
+            onDeleteCoupon={handleDeleteCoupon}
+            onNotification={addNotification}
+          />
         ) : (
-          /* 쇼핑몰 페이지 */
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* 상품 목록 */}
-            <div className="lg:col-span-3">
-              <ProductList
-                products={filteredProducts}
-                totalCount={products.length}
-                searchTerm={debouncedSearchTerm}
-                getRemainingStock={getRemainingStock}
-                displayPrice={displayPrice}
-                getMaxDiscountPercent={getMaxDiscountPercent}
-                onAddToCart={handleAddToCart}
-              />
-            </div>
-
-            {/* 장바구니 사이드바 */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-24 space-y-4">
-                <Cart
-                  cart={cart}
-                  getItemTotal={getItemTotal}
-                  getDiscountRate={getDiscountRate}
-                  onUpdateQuantity={handleUpdateQuantity}
-                  onRemove={removeFromCart}
-                />
-
-                {cart.length > 0 && (
-                  <>
-                    <CouponSelector
-                      coupons={coupons}
-                      selectedCoupon={selectedCoupon}
-                      onApply={handleApplyCoupon}
-                    />
-
-                    <OrderSummary
-                      totals={totals}
-                      onCompleteOrder={completeOrder}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+          <CartPage
+            products={products}
+            filteredProducts={filteredProducts}
+            searchTerm={debouncedSearchTerm}
+            cart={cart}
+            coupons={coupons}
+            selectedCoupon={selectedCoupon}
+            totals={totals}
+            getRemainingStock={getRemainingStock}
+            displayPrice={displayPrice}
+            getMaxDiscountPercent={getMaxDiscountPercent}
+            getItemTotal={getItemTotal}
+            getDiscountRate={getDiscountRate}
+            onAddToCart={handleAddToCart}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveFromCart={removeFromCart}
+            onApplyCoupon={handleApplyCoupon}
+            onCompleteOrder={completeOrder}
+          />
         )}
       </main>
     </div>

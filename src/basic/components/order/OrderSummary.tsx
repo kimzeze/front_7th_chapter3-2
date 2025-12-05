@@ -1,4 +1,4 @@
-import type { CartTotal } from '../../utils';
+import type { CartTotal } from '../../models';
 
 interface OrderSummaryProps {
   totals: CartTotal;

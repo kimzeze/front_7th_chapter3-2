@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import type { CartItem, Coupon, Product } from '../../types';
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from '../utils';
 import {
   calculateCartTotal,
   calculateItemTotal,
@@ -9,7 +9,7 @@ import {
   addItemToCart,
   removeItemFromCart,
   type CartTotal
-} from '../utils';
+} from '../models';
 
 /**
  * useCart 훅 반환 타입
